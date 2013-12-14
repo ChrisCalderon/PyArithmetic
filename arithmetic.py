@@ -1,4 +1,14 @@
-def point_table(expression, eqfunc, lims):
+import re
+
+def point_table(expression, lims):
+	func_expression = expression.replace('^', '**')
+	bad_coefficients = re.findall(re.compile("[0-9]+x"), expression)
+	for b_c in bad_coefficients:
+		g_c = bytearay(b_c)
+		g_c.insert(-2, '*')
+		func_expression = func_expression.replace(b_c, str(g_c))
+	eqfunc = eval("lambda x: " + func_expression)
+	
 	xs = range(*lims)
 	ys = map(eqfunc, xs)
 	xs, ys, = map(str, xs), map(str, ys)
